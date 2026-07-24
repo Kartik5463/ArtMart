@@ -19,3 +19,9 @@ const connectDB = async()=>{
 }
 
 connectDB();
+app.use('/api/auth', authRoutes)
+const PORT = process.env.PORT
+
+app.listen(PORT, ()=>{
+    console.log(`server listening at port number: ${PORT}`)
+})
