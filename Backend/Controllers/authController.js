@@ -10,7 +10,6 @@ export const signup = async(req, res) =>{
             ...user
         })
     } catch (err) {
-        console.log("Error while signup:", err)
         res.status(400).json({
             success: false, 
             message: err.message
@@ -21,7 +20,6 @@ export const signup = async(req, res) =>{
 export const login = async(req, res) =>{
     try {
         const userData = await loginUser(req.body)
-        
         res.status(200).json({
             success: true,
             message: 'user loggedin succesfully',
@@ -30,7 +28,7 @@ export const login = async(req, res) =>{
     } catch (err) {
         res.status(404).json({
             success: false,
-            message: 'tumse na ho paega',
+            message: err.message
         })
     }
 
