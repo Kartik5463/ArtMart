@@ -13,11 +13,11 @@ const protect = (req, res, next) =>{
     //Bearer wkdewkdhkwejdolwejlodfjwelojdfolewjoeld
     const token  = authHeader.split(' ')[1]
 
-    console.log("token at middleware: ", token)
+    // console.log("token at middleware: ", token)
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        console.log("decoded",decoded)
+        // console.log("decoded",decoded)
         req.id = decoded.userId 
     
         next()
