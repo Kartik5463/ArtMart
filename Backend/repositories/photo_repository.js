@@ -27,3 +27,6 @@ export const findPhotosByTag = async(tag)=>{
         tags: tag
     });
 }
+export const findAllPhotos = async () => {
+    return await Photo.find().populate("photographer", "name email");
+};

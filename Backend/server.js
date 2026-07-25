@@ -3,6 +3,7 @@ import cors from 'cors'
 import 'dotenv/config'
 import mongoose from 'mongoose'
 import authRoutes from './routes/authRoutes.js'
+import photoRoutes from './routes/photoRoutes.js'
 const app=express()
 app.use(cors())
 
@@ -20,6 +21,7 @@ const connectDB = async()=>{
 
 connectDB();
 app.use('/api/auth', authRoutes)
+app.use('/api/photo',photoRoutes)
 const PORT = process.env.PORT
 
 app.listen(PORT, ()=>{
