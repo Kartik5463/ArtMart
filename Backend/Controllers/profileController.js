@@ -33,14 +33,14 @@ export const updateProfile = async(req, res)=>{
 }
 export const changePassword = async(req, res) =>{
     try {
-        const {oldPassword, newPassword} = req.body
+        const {oldPassword, newPassword,email} = req.body
         if (!oldPassword || !newPassword) {
             return res.status(400).json({
                    success: false,
                    message: "Old password and new password are required"
             });
         }
-        const updatedUser = await changeUserPassword(req.id, oldPassword, newPassword)
+        const updatedUser = await changeUserPassword(email, oldPassword, newPassword)
 
         res.status(200).json({
             success: true,

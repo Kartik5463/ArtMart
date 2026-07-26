@@ -1,7 +1,9 @@
 import { useState } from "react";
-import useAuthStore from "../store/useAuthStore";
+import useAuthStore from "../store/UseAuthStore";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate=useNavigate()
   const {login}=useAuthStore()
   const [formData, setFormData] = useState({
       email: "",
@@ -29,6 +31,7 @@ function Login() {
         throw new Error(data.message || "Signup failed");
       }
       login(data.user,data.token)
+      navigate('/dashboard')
     }
     catch(err){
       setError(err.message);
@@ -78,9 +81,9 @@ function Login() {
           </div>
 
           <div className="flex items-center justify-between text-sm">
-            <a href="#" className="text-blue-600 hover:underline">
+            <Link to="/change-password" className="text-blue-600 hover:underline">
               Forgot Password?
-            </a>
+            </Link>
           </div>
           {error && <p>{error}</p>}
           <button
@@ -94,9 +97,9 @@ function Login() {
 
         <p className="text-center text-sm mt-6">
           Don't have an account?{" "}
-          <a href="#" className="text-blue-600 font-medium hover:underline">
+          <Link to="/signup" className="text-blue-600 font-medium hover:underline">
             Sign Up
-          </a>
+          </Link>
         </p>
       </div>
     </div>

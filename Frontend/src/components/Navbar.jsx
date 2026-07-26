@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import useAuthStore from "../store/UseAuthStore";
 
 const Navbar = () => {
+  const {token,logout}=useAuthStore()
   return (
     <nav className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
       {/* Logo */}
@@ -23,6 +25,11 @@ const Navbar = () => {
         >
           Sign Up
         </Link>
+        {token&&<Link to="/" 
+        className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition shadow-md"
+        onClick={()=>{
+            logout()
+        }}>Log Out</Link>}
       </div>
     </nav>
   );

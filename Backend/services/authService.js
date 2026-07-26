@@ -1,5 +1,6 @@
-import { createUser, findUserByEmail } from "../repositories/user_repository.js"
+import { createUser, findUserByEmail, findUserByIdWithPassword } from "../repositories/user_repository.js"
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 export const signupUser = async({name, email ,password,isPhotographer})=>{
 
     const existingUser = await findUserByEmail(email)
@@ -19,12 +20,11 @@ export const signupUser = async({name, email ,password,isPhotographer})=>{
 
 export const loginUser = async({email, password}) =>{
 
-    const user = await findUserByEmail(email)
-
-    if(!user){
+    const existed=await findUserByEmail(email)
+    if(!existed){
         throw new Error("Invalid email or password")
     }
-
+    const user = await findUserByIdWithPassword(existed._id)
     const isMatch = await bcrypt.compare(password, user.password)
 
     if(!isMatch){

@@ -21,6 +21,7 @@ const connectDB = async()=>{
 }
 
 connectDB();
+app.use("/uploads", express.static("uploads"));
 app.use('/api/auth', authRoutes)
 app.use('/api/photo',photoRoutes)
 app.use('/api/profile',profileRoutes)

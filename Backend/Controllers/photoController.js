@@ -1,72 +1,85 @@
 import { changeSaleStatus, editPhotobyId, getPhotobyId, getPhotographerPortfolio, getPhotos, getPhotosForSale, removePhotobyId, searchPhotos, uploadPhoto } from "../services/photoService.js";
 
+export const uploadnewPhoto = async (req, res) => {
+    try {
+        const photographerId = req.id;
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: "Please upload an image",
+            });
+        }
+        const photoData = {
+            title: req.body.title,
+            description: req.body.description,
+            imageUrl: "/uploads/" + req.file.filename,
+            price: Number(req.body.price),
+            isForSale: req.body.isForSale === "true",
+            tags: req.body.tag
+                ? req.body.tag.split(",").map(tag => tag.trim())
+                : [],
+        };
 
-export const uploadnewPhoto=async(req,res)=>{
-    try{
-        const photographerId = req.id;   // from JWT middleware
-        const photoData = req.body;
-        const new_photo=await uploadPhoto(photographerId,photoData)
+        const newPhoto = await uploadPhoto(photographerId, photoData);
+
         res.status(201).json({
             success: true,
-            message:"uploaded photo successfully",
-            data: new_photo
+            data: newPhoto,
         });
 
-    }
-    catch(err){
+    } catch (err) {
         res.status(400).json({
             success: false,
-            message:err.message,
+            message: err.message,
         });
     }
-}
-
-export const getPhoto=async(req,res)=>{
-    try{
+};
+export const getPhoto = async (req, res) => {
+    try {
         const { id } = req.params;
-        const photo=await getPhotobyId(id);
+        const photo = await getPhotobyId(id);
         res.status(200).json({
             success: true,
-            message:"fetched photo successfully",
-            data:photo
+            message: "fetched photo successfully",
+            data: photo
         });
     }
-    catch(err){
+    catch (err) {
         res.status(400).json({
             success: false,
-            message:err.message
+            message: err.message
         });
     }
 }
-export const getAllRequiredPhotos=async(req,res)=>{
-    try{
-        const photos=await getPhotos()
+export const getAllRequiredPhotos = async (req, res) => {
+    try {
+        const photos = await getPhotos()
         res.status(200).json({
             success: true,
-            message:"fetched photos successfully",
-            data:photos
+            message: "fetched photos successfully",
+            data: photos
         });
     }
-    catch(err){
+    catch (err) {
         res.status(400).json({
             success: false,
-            message:err.message
+            message: err.message
         });
     }
 }
-export const removePhoto=async(req,res)=>{
-    try{
+export const removePhoto = async (req, res) => {
+    try {
         const { id } = req.params;
-        const photo=await removePhotobyId(id);
+        const photo = await removePhotobyId(id);
         res.status(200).json({
             success: true,
-            message:"removed photo successfully",
-            data:photo
+            message: "removed photo successfully",
+            data: photo
         });
-    }catch(err){
+    } catch (err) {
         res.status(400).json({
             success: false,
-            message:err.message
+            message: err.message
         });
     }
 }
@@ -107,50 +120,50 @@ export const getPortfolio = async (req, res) => {
         });
     }
 };
-export const sellingPhotos=async(req,res)=>{
-    try{
-        const photos=await getPhotosForSale()
+export const sellingPhotos = async (req, res) => {
+    try {
+        const photos = await getPhotosForSale()
         res.status(200).json({
             success: true,
             message: "Photos ready for selling fetched successfully",
             data: photos
         });
     }
-    catch(err){
+    catch (err) {
         res.status(400).json({
             success: false,
             message: err.message
         });
     }
 }
-export const updateSaleStatus=async(req,res)=>{
-    try{
+export const updateSaleStatus = async (req, res) => {
+    try {
         const { id } = req.params;
-        const photo=await changeSaleStatus(id)
+        const photo = await changeSaleStatus(id)
         res.status(200).json({
             success: true,
             message: "status changed successfully",
             data: photo
         });
     }
-    catch(err){
+    catch (err) {
         res.status(400).json({
             success: false,
             message: err.message
         });
     }
 }
-export const searchPhotosByTag=async(req,res)=>{
-    try{
+export const searchPhotosByTag = async (req, res) => {
+    try {
         const { tag } = req.query;
-        const photos=await searchPhotos(tag)
+        const photos = await searchPhotos(tag)
         res.status(200).json({
             success: true,
             message: "photos fetched successfully",
             data: photos
         });
     }
-    catch(err){
+    catch (err) {
         res.status(400).json({
             success: false,
             message: err.message

@@ -1,111 +1,114 @@
-
 import { Navigate, useNavigate } from "react-router-dom";
-import useAuthStore from "../Store/useAuthStore.js";
+import useAuthStore from "../store/UseAuthStore.js";
 const Home = () => {
   const { token } = useAuthStore();
   const navigate = useNavigate();
 
-  // If user is already logged in, send to feed
   if (token) {
-    return <Navigate to="/feed" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
+
   return (
-    <div className="min-h-screen bg-linear-to-br from-gray-100 via-white to-gray-200 flex items-center justify-center px-6">
+    <div className="min-h-screen  from-slate-50 via-white to-indigo-50">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 py-10">
 
-      <div className="max-w-6xl w-full grid md:grid-cols-2 gap-10 items-center">
+        <div className="grid lg:grid-cols-2 items-center gap-24">
 
-        {/* Left Content */}
-        <div className="space-y-6">
+          {/* Left Section */}
+          <div>
 
-          <h1 className="text-5xl font-bold leading-tight text-gray-900">
-            Capture Moments.
-            <span className="text-primary block">
-              Sell Stories.
+            <span className="inline-block rounded-full bg-indigo-100 px-4 py-2 text-sm font-semibold text-indigo-600">
+              📸 Welcome to ArtMart
             </span>
-          </h1>
 
-          <p className="text-lg text-gray-600 max-w-lg">
-            ArtMart connects talented photographers with people
-            looking for unique and beautiful photographs.
-            Discover, buy, and showcase amazing photography.
-          </p>
+            <h1 className="mt-8 text-5xl md:text-6xl font-extrabold leading-tight tracking-tight text-slate-900">
+              Capture Moments.
+              <br />
+              <span className="text-indigo-500">
+                Sell Stories.
+              </span>
+            </h1>
 
+            <p className="mt-8 max-w-xl text-lg leading-9 text-slate-500">
+              ArtMart is a marketplace where photographers showcase their
+              creativity and buyers discover breathtaking images from around
+              the world. Buy, sell, and inspire through photography.
+            </p>
 
-          <div className="flex gap-4">
+            <div className="mt-10 flex flex-wrap gap-5">
 
-            <button
-              onClick={() => navigate("/signup")}
-              className="btn btn-primary px-8"
-            >
-              Get Started
-            </button>
+              <button
+                onClick={() => navigate("/signup")}
+                className="rounded-xl bg-indigo-600 px-8 py-4 text-white font-semibold shadow-lg shadow-indigo-200 transition-all duration-300 hover:-translate-y-1 hover:bg-indigo-700"
+              >
+                Get Started
+              </button>
 
+              <button
+                onClick={() => navigate("/login")}
+                className="rounded-xl border border-slate-300 bg-white px-8 py-4 font-semibold text-slate-700 transition-all duration-300 hover:bg-slate-100"
+              >
+                Login
+              </button>
 
-            <button
-              onClick={() => navigate("/login")}
-              className="btn btn-outline px-8"
-            >
-              Login
-            </button>
+            </div>
+
+            {/* Stats */}
+            <div className="mt-16 flex gap-14">
+
+              <div>
+                <h2 className="text-4xl font-bold text-indigo-500">
+                  1000+
+                </h2>
+                <p className="mt-2 text-slate-500">
+                  Photos
+                </p>
+              </div>
+
+              <div>
+                <h2 className="text-4xl font-bold text-indigo-500">
+                  500+
+                </h2>
+                <p className="mt-2 text-slate-500">
+                  Creators
+                </p>
+              </div>
+
+              <div>
+                <h2 className="text-4xl font-bold text-indigo-500">
+                  24/7
+                </h2>
+                <p className="mt-2 text-slate-500">
+                  Access
+                </p>
+              </div>
+
+            </div>
 
           </div>
 
+          {/* Right Section */}
+          <div className="relative flex justify-center">
 
-          <div className="flex gap-8 pt-6">
+            {/* Glow */}
+            <div className="absolute h-80 w-80 rounded-full bg-indigo-200 blur-3xl opacity-40"></div>
 
-            <div>
-              <h3 className="text-2xl font-bold">
-                1000+
-              </h3>
-              <p className="text-gray-500">
-                Photos
-              </p>
-            </div>
+            {/* Card */}
+            <div className="relative rounded-3xl border border-slate-200 bg-white p-5 shadow-2xl">
 
+              <img
+                src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=900&q=80"
+                alt="Photography"
+                className="h-[550px] w-[500px] rounded-2xl object-cover transition duration-500 hover:scale-105"
+              />
 
-            <div>
-              <h3 className="text-2xl font-bold">
-                500+
-              </h3>
-              <p className="text-gray-500">
-                Creators
-              </p>
-            </div>
-
-
-            <div>
-              <h3 className="text-2xl font-bold">
-                24/7
-              </h3>
-              <p className="text-gray-500">
-                Access
-              </p>
             </div>
 
           </div>
 
         </div>
-
-
-
-        {/* Right Image Section */}
-        <div className="flex justify-center">
-
-          <div className="card bg-base-100 shadow-2xl p-4 rotate-3 hover:rotate-0 transition duration-500">
-
-            <img
-              src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32"
-              alt="Photography"
-              className="rounded-xl w-[450px] h-[450px] object-cover"
-            />
-
-          </div>
-
-        </div>
-
 
       </div>
-
     </div>
   );
 };
