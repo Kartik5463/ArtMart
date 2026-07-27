@@ -3,7 +3,8 @@ import useAuthStore from "../store/UseAuthStore";
 
 const SideBar = () => {
   const navigate=useNavigate()
-  const {logout}=useAuthStore()
+  const {user,logout}=useAuthStore()
+  console.log(user)
   const HandleLogOut=async()=>{
     await logout()
     navigate('/');
@@ -50,12 +51,14 @@ const SideBar = () => {
           >
             Sales
           </NavLink>
-
           <NavLink
             to="/dashboard/profile"
             className="hover:bg-gray-700 px-3 py-2 rounded"
           >
-            Profile
+            <div className="flex gap-3 items-center">
+              <p>{user.userName}</p>
+              <img src={`http://localhost:5000${user.profileImg}`} className="h-8 w-8 rounded-full border-amber-200 border-2 object-center" />
+            </div>
           </NavLink>
 
           <NavLink

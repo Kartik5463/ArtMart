@@ -58,7 +58,7 @@ function App() {
         <Route path="/dashboard/profile" element={<Profile />} />
         <Route path="/dashboard/purchases" element={<PurchasedImages />} />
         <Route path="/dashboard/settings" element={<Settings />} />
-          <Route path="/dashboard/sales" element={<PhotographerRoute><Sales /> </PhotographerRoute>} />
+        <Route path="/dashboard/sales" element={<PhotographerRoute><Sales /> </PhotographerRoute>} />
       </Route>
     </Routes>
   );
