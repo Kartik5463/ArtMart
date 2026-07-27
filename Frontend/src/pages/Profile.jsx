@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/UseAuthStore";
@@ -6,6 +7,7 @@ function Profile() {
   const navigate = useNavigate();
 
   const { token, user, setUser } = useAuthStore();
+  console.log("user from store",user)
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -17,7 +19,6 @@ function Profile() {
 
   useEffect(() => {
     if (user) {
-      console.log("user object:", user);
       setFormData({
         name: user.userName,
         email: user.userEmail,
@@ -57,7 +58,6 @@ function Profile() {
       const form = new FormData();
 
       form.append("name", formData.name);
-
       if (selectedImage) {
         form.append("profileImg", selectedImage);
       }
@@ -220,6 +220,8 @@ function Profile() {
             </div>
           </div>
         </div>
+
+        {/* Purchased Images */}
       </div>
     </div>
   );

@@ -12,8 +12,8 @@ export const findPurchasesByBuyer = async (buyer) => {
     return await Transaction.find({ buyer });
 };
 
-export const findPurchasesByPhotographer = async (photograper) => {
-    return await Transaction.find({ photographer });
+export const findPurchasesByPhotographer = async (photographerId) => {
+    return await Transaction.find({ photographer: photographerId }).populate("photo","imageUrl").populate("buyer","name email");
 };
 
 export const findPurchasesByPhoto = async (photo) => {

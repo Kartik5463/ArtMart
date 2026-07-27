@@ -11,6 +11,10 @@ import Feed from "./pages/Feed";
 import Upload from "./pages/Upload";
 import MyPhotos from "./pages/MyPhotos";
 import Profile from "./pages/Profile";
+import PurchasedImages from "./pages/PurchasedImages";
+import Settings from "./pages/Settings";
+import Sales from "./pages/Sales";
+import PhotographerRoute from "./components/PhotographerRoute";
 function App() {
   return (
     <Routes>
@@ -52,6 +56,9 @@ function App() {
         <Route path="/dashboard/upload" element={<Upload />} />
         <Route path="/dashboard/myphotos" element={<MyPhotos />} />
         <Route path="/dashboard/profile" element={<Profile />} />
+        <Route path="/dashboard/purchases" element={<PurchasedImages />} />
+        <Route path="/dashboard/settings" element={<Settings />} />
+          <Route path="/dashboard/sales" element={<PhotographerRoute><Sales /> </PhotographerRoute>} />
       </Route>
     </Routes>
   );

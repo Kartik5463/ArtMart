@@ -58,7 +58,6 @@ export const getPurchaseHistoryController = async (req, res) => {
 export const getSalesHistoryController = async (req, res) => {
         try {
             const sales = await getSalesHistory(req.id);
-
             res.status(200).json({
                 success: true,
                 sales

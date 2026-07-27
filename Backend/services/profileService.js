@@ -1,4 +1,4 @@
-import { findUserByEmail, findUserById, findUserByIdWithPassword, updateUser } from "../repositories/user_repository.js"
+import { findPurchasedPhotos, findUserByEmail, findUserById, findUserByIdWithPassword, updateUser } from "../repositories/user_repository.js"
 import bcrypt from "bcrypt";
 export const getUserProfile=async(userId)=>{
     const user=await findUserById(userId)
@@ -38,4 +38,7 @@ export const changeUserPassword=async(email,oldPassword,newPassword)=>{
     const updatedUser = await updateUser(user_e._id, {password: hashedPassword})
 
     return updatedUser;
+}
+export const FindAllPurchasedPhotosByUser=async(id)=>{
+    return  await   findPurchasedPhotos(id);
 }

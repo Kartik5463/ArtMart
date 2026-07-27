@@ -1,5 +1,5 @@
 import express from 'express'
-import { changePassword, getMe, updateProfile } from '../Controllers/profileController.js'
+import { changePassword, getAllPurchasedPhotos, getMe, updateProfile } from '../Controllers/profileController.js'
 import protect from '../middlewares/authMiddleware.js'
 import dest from "../middlewares/profile-imageMiddleware.js";
 const router = express.Router()
@@ -11,4 +11,5 @@ router.put(
   updateProfile
 );
 router.put('/change-password',changePassword)
+router.get("/my-purchases", protect, getAllPurchasedPhotos);
 export default router

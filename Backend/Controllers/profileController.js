@@ -1,4 +1,4 @@
-import { changeUserPassword, getUserProfile, updateUserProfile } from "../services/profileService.js"
+import { changeUserPassword, FindAllPurchasedPhotosByUser, getUserProfile, updateUserProfile } from "../services/profileService.js"
 
 export const getMe = async (req, res) => {
     try {
@@ -22,11 +22,17 @@ export const updateProfile = async (req, res) => {
         if (req.file) {
             req.body.profileImg = `/profile-images/${req.file.filename}`;
         }
-        const updatedUser = await updateUserProfile(req.id, req.body)
+        const newupdatedUser = await updateUserProfile(req.id, req.body)
         res.status(200).json({
             success: true,
             message: 'User profile updated successfully',
-            updatedUser
+            updatedUser: {
+                userId: newupdatedUser._id,
+                userEmail: newupdatedUser.email,
+                userName: newupdatedUser.name,
+                isPhotographer: newupdatedUser.isPhotographer,
+                profileImg: newupdatedUser.profileImg
+            }
         })
     } catch (err) {
         res.status(401).json({
@@ -57,4 +63,21 @@ export const changePassword = async (req, res) => {
             message: err.message
         })
     }
+}
+export const getAllPurchasedPhotos = async(req, res)=>{
+    try {
+        const user = await FindAllPurchasedPhotosByUser(req.id)
+        res.status(200).json({
+            success: true,
+            message: 'profile fetched successfully',
+            user
+        })
+    } catch (err) {
+        res.status(400).json({
+            success: false,
+            message: err.message,
+        })
+    }
+
+
 }
