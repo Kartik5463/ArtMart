@@ -57,7 +57,7 @@ const SideBar = () => {
           >
             <div className="flex gap-3 items-center">
               <p>{user.userName}</p>
-              <img src={`http://localhost:5000${user.profileImg}`} className="h-8 w-8 rounded-full border-amber-200 border-2 object-center" />
+              <img src={`http://localhost:5000${user.profileImg}`} className="h-8 w-8 rounded-full border-green-400 border-2 object-center" />
             </div>
           </NavLink>
 
