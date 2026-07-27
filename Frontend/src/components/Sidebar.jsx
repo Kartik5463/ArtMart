@@ -10,9 +10,9 @@ const SideBar = () => {
     navigate('/');
   }
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       {/* Sidebar */}
-      <div className="w-60 bg-gray-900 text-white p-5">
+      <div className="sticky top-0 h-screen w-60 bg-gray-900 text-white p-5">
         <h1 className="text-2xl font-bold mb-8">ArtMart</h1>
 
         <div className="flex flex-col gap-3">

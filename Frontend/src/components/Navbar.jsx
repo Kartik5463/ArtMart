@@ -26,7 +26,7 @@ const Navbar = () => {
           Sign Up
         </Link>
         {token&&<Link to="/" 
-        className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition shadow-md"
+        className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-800 transition shadow-md"
         onClick={()=>{
             logout()
         }}>Log Out</Link>}
