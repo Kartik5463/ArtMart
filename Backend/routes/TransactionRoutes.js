@@ -12,7 +12,7 @@ import protect from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
 
-router.post("/buy/:photoId", protect, buyPhotographController);
+router.post("/buy", protect, buyPhotographController);
 
 
 router.get("/purchases", protect, getPurchaseHistoryController);

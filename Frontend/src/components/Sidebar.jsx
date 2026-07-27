@@ -20,7 +20,7 @@ const SideBar = () => {
             end
             className="hover:bg-gray-700 px-3 py-2 rounded"
           >
-            Dashboard
+            Feed
           </NavLink>
 
           <NavLink
@@ -31,7 +31,7 @@ const SideBar = () => {
           </NavLink>
 
           <NavLink
-            to="/dashboard/photos"
+            to="/dashboard/myphotos"
             className="hover:bg-gray-700 px-3 py-2 rounded"
           >
             My Photos
@@ -72,7 +72,6 @@ const SideBar = () => {
           </div>
         </div>
       </div>
-
       {/* Content */}
       <div className="flex-1 bg-gray-100 p-6">
         <Outlet />

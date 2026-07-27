@@ -11,6 +11,7 @@ export const updateUserProfile=async(userId,updates)=>{
      const allowedUpdates = {}
 
     if(updates.name) allowedUpdates.name = updates.name
+    if(updates.profileImg) allowedUpdates.profileImg= updates.profileImg
     const updatedUser = await updateUser(userId, allowedUpdates)
     if(!updatedUser){
         throw new Error("user not found");

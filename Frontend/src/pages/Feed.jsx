@@ -10,7 +10,6 @@ const Feed = () => {
      console.log("useEffect called");
      console.log("Token:", token);
     if(!token)return
-
     try {
       const res = await fetch("http://localhost:5000/api/photo", {
         method: "GET",

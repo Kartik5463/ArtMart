@@ -20,6 +20,10 @@ const useAuthStore = create(
     logout: ()=>set(()=>({
         user: null,
         token: null
+    })),
+    setUser: (userData) =>
+        set(() => ({
+          user: userData,
     }))
 })
 

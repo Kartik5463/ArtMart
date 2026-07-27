@@ -28,3 +28,16 @@ export const findPurchasedPhotos = async(id)=>{
     return await User.findById(id)
         .populate("purchasedImages");
 }
+export const addPurchasedImage = async (userId, photoId) => {
+  return await User.findByIdAndUpdate(
+    userId,
+    {
+      $addToSet: {
+        purchasedImages: photoId,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+};

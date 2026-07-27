@@ -27,7 +27,14 @@ const userSchema = new mongoose.Schema({
     ref: "Photo"
   }],
   default: []
-  }
+  },
+  profileImg:{
+    type:String,
+    required:true,
+    default:"https://static.vecteezy.com/system/resources/previews/060/605/418/non_2x/default-avatar-profile-icon-social-media-user-free-vector.jpg"
+  },
+
+
 }, { timestamps: true });
 const User=mongoose.model("User",userSchema)
 export default User

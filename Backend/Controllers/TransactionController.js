@@ -5,8 +5,8 @@ export const buyPhotographController = async (req, res) => {
         const buyerId = req.id
         const { photoId } = req.body
         const transaction = await buyPhoto(
-            buyerId,
-            photoId
+            photoId,
+            buyerId
         );
         res.status(201).json({
             success: true,

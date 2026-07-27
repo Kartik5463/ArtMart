@@ -9,7 +9,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import SideBar from "./components/Sidebar"; // Make sure path matches your file
 import Feed from "./pages/Feed";
 import Upload from "./pages/Upload";
-
+import MyPhotos from "./pages/MyPhotos";
+import Profile from "./pages/Profile";
 function App() {
   return (
     <Routes>
@@ -49,6 +50,8 @@ function App() {
       >
         <Route index element={<Feed />} />
         <Route path="/dashboard/upload" element={<Upload />} />
+        <Route path="/dashboard/myphotos" element={<MyPhotos />} />
+        <Route path="/dashboard/profile" element={<Profile />} />
       </Route>
     </Routes>
   );

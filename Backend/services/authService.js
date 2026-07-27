@@ -37,6 +37,7 @@ export const loginUser = async({email, password}) =>{
         userId: user._id,
         userEmail: user.email,
         userName: user.name,
-        isPhotographer:user.isPhotographer
+        isPhotographer:user.isPhotographer,
+        profileImg:user.profileImg
     } }
 }
