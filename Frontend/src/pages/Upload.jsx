@@ -16,10 +16,71 @@ const Upload = () => {
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [generating, setGenerating] = useState(false);
+  const [generatingPrice, setGeneratingPrice] = useState(false);
 
+  const handleGeneratePrice = async () => {
+
+    if (!formData.title || !formData.tag || !formData.description) {
+      toast.error("Please enter title and category first and Description first");
+      return;
+    }
+    if (
+      formData.price &&
+      !window.confirm("Replace the current Price?")
+    ) {
+      return;
+    }
+
+
+    try {
+
+      setGeneratingPrice(true);
+
+
+      const res = await fetch(
+        "http://localhost:5000/api/ai/price",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+
+          body: JSON.stringify({
+            title: formData.title,
+            tag: formData.tag,
+            description: formData.description
+          })
+        }
+      );
+
+
+      const data = await res.json();
+
+
+      if (data.success) {
+
+        setFormData(prev => ({
+          ...prev,
+          price: data.price
+        }));
+
+      }
+
+
+    }
+    catch (err) {
+      toast.error(err.message)
+    }
+    finally {
+      setGeneratingPrice(false);
+    }
+
+  }
   const handleGenerateDescription = async () => {
     if (!formData.title || !formData.tag) {
-       toast.error("Please enter title and category first.");
+      toast.error("Please enter title and category first.");
       return;
     }
     if (
@@ -132,77 +193,126 @@ const Upload = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 p-8 ">
-      <div className="mx-auto max-w-6xl rounded-3xl bg-white shadow-2xl overflow-hidden grid lg:grid-cols-2">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-indigo-100 py-10 px-4">
+      <div className="mx-auto max-w-7xl overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-[0_20px_60px_rgba(0,0,0,0.12)] grid lg:grid-cols-2">
+
         {/* Left */}
-        <div className="p-10">
-          <h1 className="text-4xl font-bold text-slate-800">
-            Upload Photo
-          </h1>
+        <div className="p-10 lg:p-12">
+          <div className="mb-10">
+            <h1 className="text-4xl font-bold text-slate-800">
+              📸 Upload Your Photo
+            </h1>
+            <p className="mt-3 text-slate-500">
+              Share your best work with thousands of buyers around the world.
+            </p>
+          </div>
 
-          <p className="text-slate-500 mt-2 mb-8">
-            Share your creativity with thousands of buyers.
-          </p>
+          <form onSubmit={handleSubmit} className="space-y-6">
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <input
-              type="text"
-              name="title"
-              placeholder="Photo Title"
-              required
-              value={formData.title}
-              onChange={handleChange}
-              className="input input-bordered w-full bg-amber-50 rounded-xl p-3"
-            />
-            <div className="flex justify-between items-center mb-2">
-              <label className="font-medium text-gray-700">
-                Description
+            {/* Title */}
+            <div className="space-y-2">
+              <label className="font-semibold text-slate-700">
+                📝 Photo Title
               </label>
 
-              <button
-                type="button"
-                onClick={handleGenerateDescription}
-                disabled={generating}
-                className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded-lg text-sm disabled:opacity-50"
-              >
-                {generating ? "Generating..." : "✨ AI Generate"}
-              </button>
+              <input
+                type="text"
+                name="title"
+                placeholder="Amazing Sunset"
+                required
+                value={formData.title}
+                onChange={handleChange}
+                className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition-all duration-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+              />
             </div>
 
-            <textarea
-              value={formData.description}
-              required
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  description: e.target.value,
-                })
-              }
-              rows={5}
-              className="w-full border rounded-lg p-3"
-            />
+            {/* Description */}
+            <div className="rounded-2xl border border-violet-200 bg-gradient-to-r from-violet-50 to-indigo-50 p-5">
 
-            <input
-              type="number"
-              name="price"
-              required
-              min="0"
-              placeholder="(₹) Price"
-              value={formData.price}
-              onChange={handleChange}
-              className="input input-bordered w-full bg-amber-50 rounded-xl p-3"
-            />
-            <input
-              type="text"
-              name="tag"
-              required
-              placeholder="Nature, Wildlife, Portrait..."
-              value={formData.tag}
-              onChange={handleChange}
-              className="input input-bordered w-full bg-amber-50 rounded-xl p-3"
-            />
+              <div className="mb-3 flex items-center justify-between">
 
-            <label className="flex items-center gap-3">
+                <label className="font-semibold text-slate-700">
+                  🤖 AI Description
+                </label>
+
+                <button
+                  type="button"
+                  onClick={handleGenerateDescription}
+                  disabled={generating}
+                  className="rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {generating ? "Generating..." : "✨ Generate"}
+                </button>
+
+              </div>
+
+              <textarea
+                rows={5}
+                required
+                value={formData.description}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    description: e.target.value,
+                  })
+                }
+                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none transition-all duration-300 focus:border-violet-500 focus:ring-4 focus:ring-violet-100"
+              />
+            </div>
+
+            {/* Price */}
+            <div className="rounded-2xl border border-green-200 bg-gradient-to-r from-green-50 to-emerald-50 p-5">
+
+              <div className="mb-3 flex items-center justify-between">
+
+                <label className="font-semibold text-slate-700">
+                  💰 Price
+                </label>
+
+                <button
+                  type="button"
+                  onClick={handleGeneratePrice}
+                  disabled={generatingPrice}
+                  className="rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl disabled:opacity-60"
+                >
+                  {generatingPrice ? "Generating..." : "💵 Predict Price"}
+                </button>
+
+              </div>
+
+              <input
+                type="number"
+                min="0"
+                value={formData.price}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    price: e.target.value,
+                  })
+                }
+                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none transition-all duration-300 focus:border-green-500 focus:ring-4 focus:ring-green-100"
+              />
+            </div>
+
+            {/* Category */}
+            <div className="space-y-2">
+              <label className="font-semibold text-slate-700">
+                🏷️ Category
+              </label>
+
+              <input
+                type="text"
+                name="tag"
+                required
+                placeholder="Nature, Wildlife, Portrait..."
+                value={formData.tag}
+                onChange={handleChange}
+                className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition-all duration-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+              />
+            </div>
+
+            {/* Checkbox */}
+            <label className="flex items-center gap-3 rounded-xl bg-slate-50 p-4">
               <input
                 required
                 type="checkbox"
@@ -211,12 +321,13 @@ const Upload = () => {
                 onChange={handleChange}
                 className="checkbox checkbox-primary"
               />
+
               <span className="font-medium text-slate-700">
                 Available for Sale
               </span>
             </label>
 
-            {/* Premium File Picker */}
+            {/* Upload */}
             <div>
               <input
                 required
@@ -229,10 +340,10 @@ const Upload = () => {
 
               <label
                 htmlFor="photo-upload"
-                className="flex items-center justify-between w-full cursor-pointer rounded-2xl border-2 border-dashed border-indigo-300 bg-indigo-50 px-5 py-5 hover:border-indigo-500 hover:bg-indigo-100 transition"
+                className="flex cursor-pointer items-center justify-between rounded-2xl border-2 border-dashed border-indigo-300 bg-gradient-to-r from-indigo-50 to-violet-50 p-6 transition-all duration-300 hover:border-indigo-500 hover:shadow-lg"
               >
-                <div className="flex items-center gap-4">
-                  <div className="text-4xl">🖼️</div>
+                <div className="flex items-center gap-5">
+                  <div className="text-5xl">🖼️</div>
 
                   <div>
                     <h3 className="font-semibold text-slate-800">
@@ -240,12 +351,12 @@ const Upload = () => {
                     </h3>
 
                     <p className="text-sm text-slate-500">
-                      JPG, PNG, JPEG • Click to Browse
+                      JPG, PNG, JPEG
                     </p>
                   </div>
                 </div>
 
-                <span className="bg-indigo-600 text-white px-5 py-2 rounded-xl font-semibold shadow hover:bg-indigo-700 transition">
+                <span className="rounded-xl bg-indigo-600 px-5 py-2 font-semibold text-white shadow transition hover:bg-indigo-700">
                   Browse
                 </span>
               </label>
@@ -253,35 +364,43 @@ const Upload = () => {
 
             <button
               disabled={loading}
-              className="btn btn-primary w-full rounded-xl text-lg bg-green-300 py-2"
+              className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl disabled:opacity-60"
             >
-              {loading ? "Uploading..." : "Upload Photo"}
+              {loading ? "Uploading..." : "🚀 Upload Photo"}
             </button>
+
           </form>
         </div>
 
         {/* Right */}
-        <div className="bg-slate-900 flex items-center justify-center p-8">
-          {preview ? (
-            <img
-              src={preview}
-              alt="Preview"
-              className="rounded-3xl shadow-2xl max-h-[600px] w-full object-cover"
-            />
-          ) : (
-            <div className="text-center text-slate-400">
-              <div className="text-8xl mb-5">📸</div>
+        <div className="flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 p-10">
 
-              <h2 className="text-2xl font-semibold">
-                No Image Selected
+          {preview ? (
+            <div className="overflow-hidden rounded-3xl border border-white/10 shadow-2xl">
+              <img
+                src={preview}
+                alt="Preview"
+                className="max-h-[650px] w-full object-cover transition duration-500 hover:scale-105"
+              />
+            </div>
+          ) : (
+            <div className="text-center">
+
+              <div className="mb-5 text-8xl">📸</div>
+
+              <h2 className="text-3xl font-bold text-white">
+                Live Preview
               </h2>
 
-              <p className="mt-2 text-slate-500">
-                Upload an image to preview it here.
+              <p className="mt-3 text-slate-400">
+                Your uploaded image will appear here.
               </p>
+
             </div>
           )}
+
         </div>
+
       </div>
     </div>
   );
