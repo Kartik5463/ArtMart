@@ -4,6 +4,7 @@ import 'dotenv/config'
 import mongoose from 'mongoose'
 import authRoutes from './routes/authRoutes.js'
 import photoRoutes from './routes/photoRoutes.js'
+import aiRoutes from './routes/aiRoutes.js'
 import profileRoutes from './routes/profileRoutes.js'
 import TransactionRoutes from './routes/TransactionRoutes.js'
 const app=express()
@@ -22,6 +23,7 @@ const connectDB = async()=>{
 connectDB();
 app.use("/uploads", express.static("uploads"));
 app.use("/profile-images",express.static("profile-images"))
+app.use("/api/ai",aiRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/photo',photoRoutes)
 app.use('/api/profile',profileRoutes)

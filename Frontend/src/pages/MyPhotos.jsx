@@ -45,7 +45,7 @@ const MyPhotos = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 px-8 py-10">
+    <div className="min-h-screen bg-gray-100 px-8 py-10 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       <h1 className="text-4xl font-bold mb-8">My Portfolio</h1>
 
       {photos.length === 0 ? (

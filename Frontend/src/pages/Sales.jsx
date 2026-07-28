@@ -34,7 +34,7 @@ const Sales = () => {
   }, []);
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-slate-900">My Sales</h1>
         <span className="text-slate-500">{transactions.length} Sales</span>

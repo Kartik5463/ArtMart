@@ -60,24 +60,67 @@ const Feed = () => {
   }, [searchTerm]);
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold mb-6">
-        Explore Photos
-      </h1>
-      <input
-        type="text"
-        placeholder="Search by tag..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full max-w-md mb-6 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {photos.map((photo) => (
-          <PhotoCard key={photo._id} photo={photo} />
-        ))}
+  <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
+    <div className="max-w-7xl mx-auto">
+      {/* Header */}
+      <div className="mb-10">
+        <h1 className="text-5xl font-extrabold text-gray-900 tracking-tight">
+          Explore Photos
+        </h1>
+        <p className="mt-3 text-lg text-gray-600">
+          Discover stunning photography from talented creators around the world.
+        </p>
       </div>
+
+      {/* Search Box */}
+      <div className="mb-10">
+        <div className="relative max-w-xl">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-4.35-4.35M16 10.5A5.5 5.5 0 115 10.5a5.5 5.5 0 0111 0z"
+            />
+          </svg>
+
+          <input
+            type="text"
+            placeholder="Search photos by tag..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full rounded-2xl border border-gray-200 bg-white py-4 pl-14 pr-5 text-gray-700 shadow-lg transition-all duration-300 placeholder:text-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 focus:outline-none"
+          />
+        </div>
+      </div>
+
+      {/* Photo Grid */}
+      {photos.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+          {photos.map((photo) => (
+            <PhotoCard key={photo._id} photo={photo} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-gray-300 bg-white py-20 shadow-md">
+          <div className="text-6xl mb-4">📷</div>
+          <h2 className="text-2xl font-bold text-gray-800">
+            No Photos Found
+          </h2>
+          <p className="mt-2 text-gray-500">
+            Try searching with another tag.
+          </p>
+        </div>
+      )}
     </div>
-  );
+  </div>
+);
 };
 
 export default Feed;
