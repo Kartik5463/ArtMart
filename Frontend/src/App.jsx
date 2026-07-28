@@ -56,7 +56,7 @@ function App() {
         }
       >
         <Route index element={<Feed />} />
-        <Route path="/dashboard/upload" element={<Upload />} />
+        <Route path="/dashboard/upload" element={<PhotographerRoute><Upload /> </PhotographerRoute>} />
         <Route path="/dashboard/myphotos" element={<PhotographerRoute><MyPhotos /> </PhotographerRoute>} />
         <Route path="/dashboard/profile" element={<Profile />} />
         <Route path="/dashboard/purchases" element={<PurchasedImages />} />
