@@ -24,10 +24,15 @@ export const findUserByName=async(name)=>{
 export const findUserByIdWithPassword=async(id)=>{
     return await User.findById(id)
 }
-export const findPurchasedPhotos = async(id)=>{
-    return await User.findById(id)
-        .populate("purchasedImages");
-}
+export const findPurchasedPhotos = async (id) => {
+  return await User.findById(id).populate({
+    path: "purchasedImages",
+    populate: {
+      path: "photographer",
+      select: "name", // only fetch the photographer's name
+    },
+  });
+};
 export const addPurchasedImage = async (userId, photoId) => {
   return await User.findByIdAndUpdate(
     userId,

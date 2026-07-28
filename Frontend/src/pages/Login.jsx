@@ -1,45 +1,50 @@
 import { useState } from "react";
 import useAuthStore from "../store/UseAuthStore";
 import { Link, useNavigate } from "react-router-dom";
-
+import toast from "react-hot-toast";
 function Login() {
-  const navigate=useNavigate()
-  const {login}=useAuthStore()
+  const navigate = useNavigate()
+  const { login } = useAuthStore()
   const [formData, setFormData] = useState({
-      email: "",
-      password: "",
+    email: "",
+    password: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      setError('')
-      setLoading(true)
-      const response=await fetch("http://localhost:5000/api/auth/login",{
+
+    try {
+      setError("");
+      setLoading(true);
+
+      const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
-      console.log("Response is: ",data);
+
       if (!response.ok) {
-        throw new Error(data.message || "Signup failed");
+        throw new Error(data.message || "Login failed");
       }
-      login(data.user,data.token)
-      navigate('/dashboard')
-    }
-    catch(err){
+
+      login(data.user, data.token);
+
+      toast.success("Logged in successfully!");
+    } catch (err) {
       setError(err.message);
-    }
-    finally{
+      toast.error(err.message);
+    } finally {
       setLoading(false);
     }
-  }
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8">
@@ -91,7 +96,7 @@ function Login() {
             className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
             disabled={loading}
           >
-            {loading?"Logging User":"Login"}
+            {loading ? "Logging User" : "Login"}
           </button>
         </form>
 

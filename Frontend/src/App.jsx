@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import Layout from "./Layout/Layout";
 import PublicRoute from "./components/PublicRoute";
 import Signup from "./pages/Signup";
@@ -17,6 +18,8 @@ import Sales from "./pages/Sales";
 import PhotographerRoute from "./components/PhotographerRoute";
 function App() {
   return (
+    <>
+    <Toaster position="top-right" reverseOrder={false} />
     <Routes>
       {/* Public pages without Layout */}
       <Route
@@ -61,6 +64,7 @@ function App() {
         <Route path="/dashboard/sales" element={<PhotographerRoute><Sales /> </PhotographerRoute>} />
       </Route>
     </Routes>
+    </>
   );
 }
 

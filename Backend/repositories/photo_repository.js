@@ -11,7 +11,7 @@ export const findPhotosByPhotographer = async(id)=>{
     return await Photo.find({ photographer: id });
 }
 export const findPhotosForSale=async()=>{
-    return await Photo.find({isForSale:true})
+    return await Photo.find({isForSale:true}).populate("photographer","name")
 }
 export const updatePhoto=async(id,updatedPhotoData)=>{
     return await Photo.findByIdAndUpdate(id,updatedPhotoData,{new:true})
@@ -25,7 +25,7 @@ export const deletePhoto=async(id)=>{
 export const findPhotosByTag = async(tag)=>{
     return await Photo.find({
         tags: tag
-    });
+    }).populate("photographer","name")
 }
 export const findAllPhotos = async () => {
     return await Photo.find().populate("photographer", "name email");

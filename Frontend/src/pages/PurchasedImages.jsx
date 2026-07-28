@@ -22,7 +22,6 @@ const PurchasedImages = () => {
         );
 
         const data = await response.json();
-        console.log("Purchased i am ",data)
         if (!response.ok) {
           throw new Error(data.message);
         }
@@ -102,7 +101,7 @@ const PurchasedImages = () => {
                   <div className="mt-4 flex items-center justify-between">
 
                     <span className="text-sm font-medium text-blue-600">
-                      {image.photographer?.name || "Unknown Photographer"}
+                      Photographer : {image.photographer?.name || "Unknown Photographer"}
                     </span>
 
                   </div>
