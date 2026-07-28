@@ -1,9 +1,37 @@
 import { Heart } from "lucide-react";
 import useAuthStore from "../store/UseAuthStore";
+import { useState } from "react";
 
 const PhotoCard = ({ photo }) => {
   const {token,user}=useAuthStore()
+  const [isLiked, setIsLiked] = useState(
+  photo.likedBy?.includes(user.userId)
+);
   console.log(photo)
+  const handleClick=async()=>{
+     const url = isLiked
+    ? `http://localhost:5000/api/photo/unlike/${photo._id}`
+    : `http://localhost:5000/api/photo/like/${photo._id}`;
+    try{
+             const response=await fetch(url,{
+                     method:"PATCH",
+                      headers: {
+             Authorization: `Bearer ${token}`,
+           },
+             })
+             const data= await response.json();
+             console.log(data.photo)
+
+        }
+      
+      catch(err){
+          console.log(err.message)
+      }
+      finally{
+         setIsLiked(!isLiked)
+      }
+       
+  }
   const handleTransaction=async()=>{
      try {
     const response = await fetch("http://localhost:5000/api/transaction/buy", {
@@ -43,9 +71,14 @@ const PhotoCard = ({ photo }) => {
             {photo.isForSale?"For Sale":<span className="text-red-500">Not for sale</span>}
           </span>
         {/* Like Button */}
-        <button className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-red-500 hover:text-white transition">
-          <Heart size={18} />
-        </button>
+        <button
+  onClick={handleClick}
+  className={`absolute top-4 right-4 backdrop-blur-sm p-2 rounded-full transition ${
+    isLiked ? "bg-red-500 text-white" : "bg-white/80 hover:bg-red-500 hover:text-white"
+  }`}
+>
+  <Heart size={18} fill={isLiked ? "currentColor" : "none"} />
+</button>
       </div>
 
       {/* Details */}

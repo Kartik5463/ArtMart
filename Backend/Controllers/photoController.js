@@ -170,3 +170,33 @@ export const searchPhotosByTag = async (req, res) => {
         });
     }
 }
+export const increaseLikeController = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.id; 
+
+  const photo = await  getPhotobyId(id);
+  if (!photo) return res.status(404).json({ message: "Photo not found" });
+
+  if (photo.likedBy.includes(userId)) {
+    return res.status(400).json({ message: "Already liked" });
+  }
+
+  photo.likedBy.push(userId);
+  photo.likes += 1;
+  await photo.save();
+
+  res.status(200).json(photo);
+};
+export const decreaseLikeController = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.id;
+
+  const photo = await  getPhotobyId(id);
+  if (!photo) return res.status(404).json({ message: "Photo not found" });
+
+  photo.likedBy = photo.likedBy.filter((uid) => uid.toString() !== userId.toString());
+  photo.likes = Math.max(0, photo.likes - 1);
+  await photo.save();
+
+  res.status(200).json(photo);
+};

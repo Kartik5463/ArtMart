@@ -12,19 +12,19 @@ const Navbar = () => {
 
       {/* Navigation */}
       <div className="flex items-center gap-4">
-        <Link
+        {token===null&&<Link
           to="/login"
           className=" bg-blue-600 600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 font-medium transition"
         >
           Login
-        </Link>
+        </Link>}
 
-        <Link
+        {token===null&&<Link
           to="/signup"
           className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition shadow-md"
         >
           Sign Up
-        </Link>
+        </Link>}
         {token&&<Link to="/" 
         className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-800 transition shadow-md"
         onClick={()=>{

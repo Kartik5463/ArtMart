@@ -18,8 +18,14 @@ const photoSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
-
-  tags: [String]//used for searching data
+  likes:{
+    type: Number,
+    default: 0,
+    min:0
+  },
+  likedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  tags: [String]
+  //used for searching data
 }, { timestamps: true });
 const Photo=mongoose.model("Photo",photoSchema)
 export default Photo
