@@ -57,7 +57,7 @@ Requirements:
     return res.status(200).json({
       success: true,
       filename,
-      imageUrl: `http://localhost:5000/uploads/${filename}`,
+      imageUrl: `/uploads/${filename}`,
     });
 
   } catch (error) {

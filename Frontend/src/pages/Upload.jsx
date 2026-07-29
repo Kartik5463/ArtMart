@@ -58,7 +58,7 @@ const Upload = () => {
       // Save filename
       setAiImage(data.filename);
       setPhoto(null);
-      setPreview(data.imageUrl);
+      setPreview(`${VITE_API_URL}${data.imageUrl}`);
 
       toast.success("AI Image Generated!");
 
