@@ -5,7 +5,7 @@ import {
   getPhotoPurchasesController,
   getPurchaseHistoryController,
   getSalesHistoryController,
-} from "../Controllers/transactionController.js";
+} from "../Controllers/TransactionController.js";
 
 import protect from "../middlewares/authMiddleware.js";
 
