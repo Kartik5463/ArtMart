@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
 import { User, Lock, LogOut, ChevronRight } from "lucide-react";
-
+import { VITE_API_URL } from "../config/api";
 const Settings = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
@@ -41,7 +41,7 @@ const Settings = () => {
               user?.profileImg
                 ? user.profileImg.startsWith("http")
                   ? user.profileImg
-                  : `http://localhost:5000${user.profileImg}`
+                  : `${VITE_API_URL}${user.profileImg}`
                 : `https://ui-avatars.com/api/?background=random&name=${user?.name}`
             }
             alt="Profile"

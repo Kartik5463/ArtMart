@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import PhotoCard from "../components/PhotoCard";
 import useAuthStore from "../store/useAuthStore";
-
+import { VITE_API_URL } from "../config/api";
 const Feed = () => {
   const [photos, setPhotos] = useState([]);
   const { token } = useAuthStore()
@@ -19,9 +19,9 @@ const Feed = () => {
 
         const url = searchTerm
 
-          ? `http://localhost:5000/api/photo/search?tag=${encodeURIComponent(searchTerm)}`
+          ? `${VITE_API_URL}/api/photo/search?tag=${encodeURIComponent(searchTerm)}`
 
-          : "http://localhost:5000/api/photo/sale";
+          : `${VITE_API_URL}/api/photo/sale`;
 
         const res = await fetch(url, {
 

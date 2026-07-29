@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
-
+import { VITE_API_URL } from "../config/api";
 const SideBar = () => {
 
   const navigate = useNavigate()
@@ -34,7 +34,7 @@ const SideBar = () => {
           src={
             user?.profileImg?.startsWith("http")
               ? user.profileImg
-              : `http://localhost:5000${user?.profileImg}`
+              : `${VITE_API_URL}${user?.profileImg}`
           }
           className="h-14 w-14 rounded-full border-2 border-indigo-500 object-cover"
         />

@@ -2,7 +2,7 @@ import { Heart, MessageCircle, X, Send, Pencil, Trash2, Check } from "lucide-rea
 import useAuthStore from "../store/useAuthStore";
 import { useState } from "react";
 import toast from "react-hot-toast";
-
+import { VITE_API_URL } from "../config/api";
 const PhotoCard = ({ photo }) => {
   const { token, user } = useAuthStore();
   const [isLiked, setIsLiked] = useState(
@@ -20,8 +20,8 @@ const PhotoCard = ({ photo }) => {
 
   const handleClick = async () => {
     const url = isLiked
-      ? `http://localhost:5000/api/photo/unlike/${photo._id}`
-      : `http://localhost:5000/api/photo/like/${photo._id}`;
+      ? `${VITE_API_URL}/api/photo/unlike/${photo._id}`
+      : `${VITE_API_URL}/api/photo/like/${photo._id}`;
 
     try {
       const response = await fetch(url, {
@@ -49,7 +49,7 @@ const PhotoCard = ({ photo }) => {
 
   const handleTransaction = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/transaction/buy", {
+      const response = await fetch(`${VITE_API_URL}/api/transaction/buy`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +77,7 @@ const PhotoCard = ({ photo }) => {
     setLoadingComments(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/comments/all/${photo._id}`,
+        `${VITE_API_URL}/api/comments/all/${photo._id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -98,7 +98,7 @@ const PhotoCard = ({ photo }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/comments/add-comment/${photo._id}`,
+        `${VITE_API_URL}/api/comments/add-comment/${photo._id}`,
         {
           method: "POST",
           headers: {
@@ -137,7 +137,7 @@ const PhotoCard = ({ photo }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/comments/update-comment/${commentId}`,
+        `${VITE_API_URL}/api/comments/update-comment/${commentId}`,
         {
           method: "PATCH",
           headers: {
@@ -166,7 +166,7 @@ const PhotoCard = ({ photo }) => {
   const handleDeleteComment = async (commentId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/comments/delete-comment/${commentId}`,
+        `${VITE_API_URL}/api/comments/delete-comment/${commentId}`,
         {
           method: "DELETE",
           headers: {
@@ -193,7 +193,7 @@ const PhotoCard = ({ photo }) => {
         {/* Image */}
         <div className="relative overflow-hidden">
           <img
-            src={`http://localhost:5000${photo.imageUrl}`}
+            src={`${VITE_API_URL}${photo.imageUrl}`}
             alt={photo.title}
             className="w-full h-72 object-cover group-hover:scale-110 transition duration-500"
           />
@@ -384,7 +384,7 @@ const PhotoCard = ({ photo }) => {
                       src={
                         c.user?.profileImg?.startsWith("http")
                           ? c.user.profileImg
-                          : `http://localhost:5000${c.user?.profileImg}`
+                          : `${VITE_API_URL}${c.user?.profileImg}`
                       }
                       className="h-8 w-8 rounded-full object-cover shrink-0 border border-gray-100"
                       alt=""

@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
-
+import { VITE_API_URL } from "../config/api";
 function Profile() {
   const navigate = useNavigate();
 
@@ -63,7 +63,7 @@ function Profile() {
       }
 
       const response = await fetch(
-        "http://localhost:5000/api/profile/update",
+        `${VITE_API_URL}/api/profile/update`,
         {
           method: "PUT",
           headers: {
@@ -108,7 +108,7 @@ function Profile() {
     : user.profileImg
     ? (user.profileImg.startsWith("http")
         ? user.profileImg
-        : `http://localhost:5000${user.profileImg}`)
+        : `${VITE_API_URL}${user.profileImg}`)
     : `https://ui-avatars.com/api/?background=random&name=${user.userName}`
 }
                 alt="Profile"

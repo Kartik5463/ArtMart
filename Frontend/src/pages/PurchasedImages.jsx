@@ -1,6 +1,6 @@
 import  { useEffect, useState } from "react";
 import useAuthStore from "../store/useAuthStore";
-
+import { VITE_API_URL } from "../config/api";
 const PurchasedImages = () => {
   const { token } = useAuthStore();
 
@@ -13,7 +13,7 @@ const PurchasedImages = () => {
 
       try {
         const response = await fetch(
-          "http://localhost:5000/api/profile/my-purchases",
+          `${VITE_API_URL}/api/profile/my-purchases`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -82,7 +82,7 @@ const PurchasedImages = () => {
                   src={
                     image.imageUrl.startsWith("http")
                       ? image.imageUrl
-                      : `http://localhost:5000${image.imageUrl}`
+                      : `${VITE_API_URL}${image.imageUrl}`
                   }
                   alt={image.title}
                   className="w-full h-60 object-cover"

@@ -11,7 +11,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-
+import { VITE_API_URL } from "../config/api";
 const Sales = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ const Sales = () => {
       try {
         setLoading(true);
 
-        const res = await fetch("http://localhost:5000/api/transaction/sales", {
+        const res = await fetch(`${VITE_API_URL}/api/transaction/sales`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -185,7 +185,7 @@ const Sales = () => {
                 src={
                   transaction.photo?.imageUrl?.startsWith("http")
                     ? transaction.photo.imageUrl
-                    : `http://localhost:5000${transaction.photo?.imageUrl}`
+                    : `${VITE_API_URL}${transaction.photo?.imageUrl}`
                 }
                 alt={transaction.photo?.title}
                 className="w-full h-56 object-cover"

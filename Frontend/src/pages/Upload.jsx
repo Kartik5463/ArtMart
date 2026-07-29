@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useAuthStore from "../store/useAuthStore";
 import toast from "react-hot-toast";
+import { VITE_API_URL } from "../config/api";
 const Upload = () => {
   const { token } = useAuthStore();
 
@@ -34,7 +35,7 @@ const Upload = () => {
     try {
       setGenerating(true);
 
-      const res = await fetch("http://localhost:5000/api/ai/generate", {
+      const res = await fetch(`${VITE_API_URL}/api/ai/generate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -88,7 +89,7 @@ const Upload = () => {
 
 
       const res = await fetch(
-        "http://localhost:5000/api/ai/price",
+        `${VITE_API_URL}/api/ai/price`,
         {
           method: "POST",
 
@@ -143,7 +144,7 @@ const Upload = () => {
     try {
       setGenerating(true);
 
-      const res = await fetch("http://localhost:5000/api/ai/description", {
+      const res = await fetch(`${VITE_API_URL}/api/ai/description`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -213,7 +214,7 @@ const Upload = () => {
       data.append("price", formData.price);
       data.append("tag", formData.tag);
       data.append("isForSale", formData.isForSale);
-      const res = await fetch("http://localhost:5000/api/photo", {
+      const res = await fetch(`${VITE_API_URL}/api/photo`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

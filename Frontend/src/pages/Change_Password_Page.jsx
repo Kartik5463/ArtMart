@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { VITE_API_URL } from "../config/api";
 const Change_Password_Page = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ const Change_Password_Page = () => {
       setSuccess('');
       setIsLoading(true);
 
-      const response = await fetch("http://localhost:5000/api/profile/change-password", {
+      const response = await fetch(`${VITE_API_URL}/api/profile/change-password`, {
          method: "PUT",
          headers: { 
            "Content-Type": "application/json" // FIX 2: Added Content-Type

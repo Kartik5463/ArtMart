@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import PhotoCard from "../components/PhotoCard";
 import useAuthStore from "../store/useAuthStore";
-
+import { VITE_API_URL } from "../config/api";
 const MyPhotos = () => {
   const { token, user } = useAuthStore();
   const [photos, setPhotos] = useState([]);
@@ -11,7 +11,7 @@ const MyPhotos = () => {
     const getPortfolio = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/photo/portfolio/${user.userId}`,
+          `${VITE_API_URL}/api/photo/portfolio/${user.userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
