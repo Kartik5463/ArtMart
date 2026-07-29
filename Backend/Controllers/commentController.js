@@ -3,7 +3,7 @@ import {
  fetchCommentsForPhoto,
   deleteComment,
   updateComment,
-} from "../Services/commentService.js";
+} from "../services/commentService.js";
 
 export const addCommentController = async (req, res) => {
   const { photoId } = req.params;
