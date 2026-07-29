@@ -2,8 +2,9 @@ import express from "express";
 import { generateDescription } from "../Controllers/DescriptionController.js";
 import protect from "../middlewares/authMiddleware.js";
 import { generatePrice } from "../Controllers/PriceGeneratorController.js";
+import { generateImage } from "../Controllers/ImageGeneratorController.js";
 const router = express.Router();
-
 router.post("/description",protect,generateDescription);
 router.post("/price",protect,generatePrice);
+router.post("/generate", protect, generateImage);
 export default router;

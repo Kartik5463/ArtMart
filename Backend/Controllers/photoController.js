@@ -3,16 +3,37 @@ import { changeSaleStatus, editPhotobyId, getPhotobyId, getPhotographerPortfolio
 export const uploadnewPhoto = async (req, res) => {
     try {
         const photographerId = req.id;
-        if (!req.file) {
-            return res.status(400).json({
-                success: false,
-                message: "Please upload an image",
-            });
+
+        let imageUrl;
+
+        // AI Generated Image
+        if (req.body.isAI === "true") {
+            if (!req.body.photo) {
+                return res.status(400).json({
+                    success: false,
+                    message: "AI image not found.",
+                });
+            }
+
+            imageUrl = "/uploads/" + req.body.photo;
         }
+
+        // Normal Uploaded Image
+        else {
+            if (!req.file) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Please upload an image",
+                });
+            }
+
+            imageUrl = "/uploads/" + req.file.filename;
+        }
+
         const photoData = {
             title: req.body.title,
             description: req.body.description,
-            imageUrl: "/uploads/" + req.file.filename,
+            imageUrl,
             price: Number(req.body.price),
             isForSale: req.body.isForSale === "true",
             tags: req.body.tag

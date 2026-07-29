@@ -17,7 +17,57 @@ const Upload = () => {
   const [loading, setLoading] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [generatingPrice, setGeneratingPrice] = useState(false);
+  const [aiImage, setAiImage] = useState("");
+  const handleGenerateImage = async () => {
+    if (!formData.title || !formData.description) {
+      toast.error("Please enter title and description first.");
+      return;
+    }
 
+    if (
+      photo &&
+      !window.confirm("Replace the current image?")
+    ) {
+      return;
+    }
+
+    try {
+      setGenerating(true);
+
+      const res = await fetch("http://localhost:5000/api/ai/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          title: formData.title,
+          description: formData.description,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.log(data.message)
+        toast.error(data.message);
+        return;
+      }
+
+      // Save filename
+      setAiImage(data.filename);
+      setPhoto(null);
+      setPreview(data.imageUrl);
+
+      toast.success("AI Image Generated!");
+
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to generate image.");
+    } finally {
+      setGenerating(false);
+    }
+  };
   const handleGeneratePrice = async () => {
 
     if (!formData.title || !formData.tag || !formData.description) {
@@ -136,6 +186,7 @@ const Upload = () => {
 
     if (!file) return;
 
+    setAiImage("");   // Clear AI image
     setPhoto(file);
     setPreview(URL.createObjectURL(file));
   };
@@ -143,15 +194,20 @@ const Upload = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!photo) {
-      toast.error("Please select an image.");
+    if (!photo && !aiImage) {
+      toast.error("Please select or generate an image.");
       return;
     }
 
     try {
       setLoading(true);
       const data = new FormData();
-      data.append("photo", photo);
+      if (aiImage) {
+        data.append("photo", aiImage);
+        data.append("isAI", "true");
+      } else {
+        data.append("photo", photo);
+      }
       data.append("title", formData.title);
       data.append("description", formData.description);
       data.append("price", formData.price);
@@ -185,6 +241,7 @@ const Upload = () => {
 
       setPhoto(null);
       setPreview(null);
+      setAiImage("");
     } catch (err) {
       toast.error("Upload failed");
     } finally {
@@ -239,7 +296,7 @@ const Upload = () => {
                   type="button"
                   onClick={handleGenerateDescription}
                   disabled={generating}
-                  className="rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
+                  className="rounded-xl cursor-pointer bg-gradient-to-r from-violet-600 to-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {generating ? "Generating..." : "✨ Generate"}
                 </button>
@@ -273,9 +330,9 @@ const Upload = () => {
                   type="button"
                   onClick={handleGeneratePrice}
                   disabled={generatingPrice}
-                  className="rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl disabled:opacity-60"
+                  className="rounded-xl cursor-pointer bg-gradient-to-r from-green-500 to-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl disabled:opacity-60"
                 >
-                  {generatingPrice ? "Generating..." : "💵 Predict Price"}
+                  {generatingPrice ? "Predicting..." : "💵 Predict Price"}
                 </button>
 
               </div>
@@ -328,9 +385,34 @@ const Upload = () => {
             </label>
 
             {/* Upload */}
+            <div className="rounded-2xl border border-blue-200 bg-gradient-to-r from-blue-50 to-cyan-50 p-5">
+
+              <div className="flex items-center justify-between">
+
+                <div>
+                  <h3 className="font-semibold text-slate-700">
+                    🤖 AI Image
+                  </h3>
+
+                  <p className="text-sm text-slate-500">
+                    Generate an image from the title and description.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleGenerateImage}
+                  disabled={generating}
+                  className=" bg-gradient-to-r from-blue-600 to-cyan-600 px-4 py-2 text-white font-semibold rounded-xl cursor-pointer  text-sm   shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl disabled:opacity-60"
+                >
+                  {generating ? "Generating..." : "✨ Generate"}
+                </button>
+
+              </div>
+
+            </div>
             <div>
               <input
-                required
                 id="photo-upload"
                 type="file"
                 accept="image/*"
@@ -346,8 +428,12 @@ const Upload = () => {
                   <div className="text-5xl">🖼️</div>
 
                   <div>
-                    <h3 className="font-semibold text-slate-800">
-                      {photo ? photo.name : "Choose an Image"}
+                    <h3 className="font-semibold text-slate-800 m-5">
+                      {photo
+                        ? photo.name
+                        : aiImage
+                          ? aiImage
+                          : "Choose an Image or Generate with AI"}
                     </h3>
 
                     <p className="text-sm text-slate-500">
