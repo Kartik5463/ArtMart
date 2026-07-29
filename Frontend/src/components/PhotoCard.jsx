@@ -1,5 +1,5 @@
 import { Heart, MessageCircle, X, Send, Pencil, Trash2, Check } from "lucide-react";
-import useAuthStore from "../store/UseAuthStore";
+import useAuthStore from "../store/useAuthStore";
 import { useState } from "react";
 import toast from "react-hot-toast";
 

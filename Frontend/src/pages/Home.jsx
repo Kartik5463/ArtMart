@@ -1,5 +1,5 @@
 import { Navigate, useNavigate } from "react-router-dom";
-import useAuthStore from "../store/UseAuthStore.js";
+import useAuthStore from "../store/useAuthStore.js";
 
 const Home = () => {
   const { token } = useAuthStore();

@@ -1,5 +1,5 @@
 import  { useEffect, useState } from "react";
-import useAuthStore from "../store/UseAuthStore";
+import useAuthStore from "../store/useAuthStore";
 
 const PurchasedImages = () => {
   const { token } = useAuthStore();

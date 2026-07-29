@@ -1,6 +1,6 @@
 
 import { useEffect, useState, useMemo } from "react";
-import useAuthStore from "../store/UseAuthStore";
+import useAuthStore from "../store/useAuthStore";
 import { TrendingUp, ShoppingBag, Calendar } from "lucide-react";
 import {
   AreaChart,

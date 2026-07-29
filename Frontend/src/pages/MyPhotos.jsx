@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PhotoCard from "../components/PhotoCard";
-import useAuthStore from "../store/UseAuthStore";
+import useAuthStore from "../store/useAuthStore";
 
 const MyPhotos = () => {
   const { token, user } = useAuthStore();

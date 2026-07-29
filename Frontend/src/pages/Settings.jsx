@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import useAuthStore from "../store/UseAuthStore";
+import useAuthStore from "../store/useAuthStore";
 import { User, Lock, LogOut, ChevronRight } from "lucide-react";
 
 const Settings = () => {

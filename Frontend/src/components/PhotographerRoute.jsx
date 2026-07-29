@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuthStore from "../store/UseAuthStore";
+import useAuthStore from "../store/useAuthStore";
 import { ShieldAlert } from "lucide-react";
 
 const PhotographerRoute = ({ children }) => {

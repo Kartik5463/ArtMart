@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useAuthStore from "../store/UseAuthStore";
+import useAuthStore from "../store/useAuthStore";
 import toast from "react-hot-toast";
 const Upload = () => {
   const { token } = useAuthStore();
