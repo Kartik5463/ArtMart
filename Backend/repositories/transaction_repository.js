@@ -1,4 +1,4 @@
-import Transaction from "../Models/Transaction.js";
+import Transaction from "../models/Transaction.js";
 
 export const createPurchase = async (transactionDetails) => {
     return await Transaction.create(transactionDetails);
