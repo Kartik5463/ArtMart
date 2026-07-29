@@ -1,4 +1,4 @@
-import Comment from "../Models/Comment.js";
+import Comment from "../models/Comment.js";
 
 
 export const findCommentById=async(id)=>{
