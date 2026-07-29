@@ -1,6 +1,7 @@
 import { Heart, MessageCircle, X, Send, Pencil, Trash2, Check } from "lucide-react";
 import useAuthStore from "../store/UseAuthStore";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const PhotoCard = ({ photo }) => {
   const { token, user } = useAuthStore();
@@ -8,7 +9,7 @@ const PhotoCard = ({ photo }) => {
     photo.likedBy?.includes(user.userId)
   );
   const [likes, setLikes] = useState(photo.likes);
-
+  const [isShowed,setIsShowed]=useState(true);
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
@@ -35,6 +36,7 @@ const PhotoCard = ({ photo }) => {
 
       if (!isLiked) {
         setLikes((prev) => prev + 1);
+        toast.success("Liked the Photo")
       } else {
         setLikes((prev) => prev - 1);
       }
@@ -63,11 +65,10 @@ const PhotoCard = ({ photo }) => {
         console.log(data.message);
         return;
       }
-      window.location.reload();
-
-      console.log(data);
+      toast.success("Purchased Successfully!");
+      setIsShowed(false)
     } catch (err) {
-      console.log(err.message);
+        toast.error("Purchased Failed");
     }
   };
 
@@ -188,7 +189,7 @@ const PhotoCard = ({ photo }) => {
 
   return (
     <>
-      <div className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+      {isShowed&&<div className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
         {/* Image */}
         <div className="relative overflow-hidden">
           <img
@@ -207,7 +208,7 @@ const PhotoCard = ({ photo }) => {
               isLiked ? "bg-red-500 text-white" : "bg-white/80 hover:bg-red-500 hover:text-white"
             }`}
           >
-            <Heart size={18} fill={isLiked ? "currentColor" : "none"} />
+            <Heart size={21} fill={isLiked ? "currentColor" : "none"} />
           </button>
         </div>
 
@@ -234,7 +235,7 @@ const PhotoCard = ({ photo }) => {
     <div className="flex items-center gap-3 text-sm text-gray-500 shrink-0">
       <div className="flex items-center gap-1">
         <Heart
-          size={14}
+          size={20}
           fill={isLiked ? "currentColor" : "none"}
           className={isLiked ? "text-red-500" : ""}
         />
@@ -334,7 +335,7 @@ const PhotoCard = ({ photo }) => {
   </div>
 
 </div>
-      </div>
+      </div>}
 
       {/* Comments Modal */}
       {showComments && (

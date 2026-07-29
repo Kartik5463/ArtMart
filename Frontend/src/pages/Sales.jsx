@@ -1,15 +1,24 @@
-import { useEffect, useState } from "react";
+
+import { useEffect, useState, useMemo } from "react";
 import useAuthStore from "../store/UseAuthStore";
+import { TrendingUp, ShoppingBag, Calendar } from "lucide-react";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 const Sales = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const { token } = useAuthStore();
-  
+
   useEffect(() => {
     const getSales = async () => {
-      
-
       try {
         setLoading(true);
 
@@ -33,12 +42,127 @@ const Sales = () => {
     getSales();
   }, []);
 
+  // ---- Analytics (computed from existing transactions state, no fetch logic changed) ----
+  const analytics = useMemo(() => {
+    const totalRevenue = transactions.reduce(
+      (sum, t) => sum + (t.amount || 0),
+      0
+    );
+    const totalSales = transactions.length;
+    const avgSale = totalSales > 0 ? totalRevenue / totalSales : 0;
+
+    const now = new Date();
+    const thisMonthSales = transactions.filter((t) => {
+      const d = new Date(t.createdAt);
+      return (
+        d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()
+      );
+    }).length;
+
+    // Group revenue by date for the trend chart
+    const revenueByDate = {};
+    transactions.forEach((t) => {
+      const dateKey = new Date(t.createdAt).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+      revenueByDate[dateKey] = (revenueByDate[dateKey] || 0) + (t.amount || 0);
+    });
+
+    const chartData = Object.entries(revenueByDate)
+      .map(([date, revenue]) => ({ date, revenue }))
+      .slice(-14); // last 14 data points
+
+    return { totalRevenue, totalSales, avgSale, thisMonthSales, chartData };
+  }, [transactions]);
+
   return (
     <div className="p-6 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-slate-900">My Sales</h1>
         <span className="text-slate-500">{transactions.length} Sales</span>
       </div>
+
+      {/* ---- Analytics Dashboard ---- */}
+      {!loading && transactions.length > 0 && (
+        <div className="mb-8 space-y-6">
+          {/* Stat cards */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-white rounded-2xl shadow-md p-5">
+              <div className="flex items-center gap-2 text-slate-500 text-sm mb-2">
+                ₹
+                Total Revenue
+              </div>
+              <p className="text-2xl font-bold text-emerald-600">
+                 ₹{analytics.totalRevenue.toFixed(2)}
+              </p>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-md p-5">
+              <div className="flex items-center gap-2 text-slate-500 text-sm mb-2">
+                <ShoppingBag size={16} />
+                Total Sales
+              </div>
+              <p className="text-2xl font-bold text-slate-900">
+                {analytics.totalSales}
+              </p>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-md p-5">
+              <div className="flex items-center gap-2 text-slate-500 text-sm mb-2">
+                <TrendingUp size={16} />
+                Avg. Sale Value
+              </div>
+              <p className="text-2xl font-bold text-indigo-600">
+                 ₹{analytics.avgSale.toFixed(2)}
+              </p>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-md p-5">
+              <div className="flex items-center gap-2 text-slate-500 text-sm mb-2">
+                <Calendar size={16} />
+                This Month
+              </div>
+              <p className="text-2xl font-bold text-slate-900">
+                {analytics.thisMonthSales}
+              </p>
+            </div>
+          </div>
+
+          {/* Revenue trend chart */}
+          {analytics.chartData.length > 1 && (
+            <div className="bg-white rounded-2xl shadow-md p-5">
+              <h3 className="text-sm font-semibold text-slate-600 mb-4">
+                Revenue Trend
+              </h3>
+              <ResponsiveContainer width="100%" height={240}>
+                <AreaChart data={analytics.chartData}>
+                  <defs>
+                    <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                  <XAxis dataKey="date" tick={{ fontSize: 12, fill: "#94a3b8" }} />
+                  <YAxis tick={{ fontSize: 12, fill: "#94a3b8" }} />
+                  <Tooltip
+                    formatter={(value) => [` ₹${value.toFixed(2)}`, "Revenue"]}
+                    contentStyle={{ borderRadius: 12, border: "none", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="revenue"
+                    stroke="#6366f1"
+                    strokeWidth={2}
+                    fill="url(#revenueGradient)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+        </div>
+      )}
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
@@ -100,7 +224,7 @@ const Sales = () => {
                   <div className="flex justify-between items-center pt-2">
                     <span className="text-sm text-slate-500">Amount</span>
                     <span className="text-lg font-bold text-emerald-600">
-                      ${transaction .amount}
+                       ₹{transaction .amount}
                     </span>
                   </div>
                 </div>
