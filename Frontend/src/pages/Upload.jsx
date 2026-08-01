@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import { VITE_API_URL } from "../config/api";
 const Upload = () => {
   const { token } = useAuthStore();
-
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -12,7 +11,6 @@ const Upload = () => {
     tag: "",
     isForSale: true,
   });
-
   const [photo, setPhoto] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -24,17 +22,14 @@ const Upload = () => {
       toast.error("Please enter title and description first.");
       return;
     }
-
     if (
       photo &&
       !window.confirm("Replace the current image?")
     ) {
       return;
     }
-
     try {
       setGenerating(true);
-
       const res = await fetch(`${VITE_API_URL}/api/ai/generate`, {
         method: "POST",
         headers: {
@@ -46,9 +41,7 @@ const Upload = () => {
           description: formData.description,
         }),
       });
-
       const data = await res.json();
-
       if (!res.ok) {
         console.log(data.message)
         toast.error(data.message);

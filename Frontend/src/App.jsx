@@ -16,6 +16,7 @@ import PurchasedImages from "./pages/PurchasedImages";
 import Settings from "./pages/Settings";
 import Sales from "./pages/Sales";
 import PhotographerRoute from "./components/PhotographerRoute";
+import NotFound from "./pages/NotFound";
 function App() {
   return (
     <>
@@ -63,6 +64,7 @@ function App() {
         <Route path="/dashboard/settings" element={<Settings />} />
         <Route path="/dashboard/sales" element={<PhotographerRoute><Sales /> </PhotographerRoute>} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
     </>
   );
