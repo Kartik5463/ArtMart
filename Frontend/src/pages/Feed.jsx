@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import PhotoCard from "../components/PhotoCard";
 import useAuthStore from "../store/useAuthStore";
 import { VITE_API_URL } from "../config/api";
+import { useNavigate } from "react-router-dom";
 const Feed = () => {
   const [photos, setPhotos] = useState([]);
   const { token } = useAuthStore()
   const [searchTerm, setSearchTerm] = useState("")
+  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -43,7 +45,10 @@ const Feed = () => {
 
       } catch (err) {
 
-        console.log("Error:", err);
+        if (err.response?.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/");
+        }
 
       }
 
