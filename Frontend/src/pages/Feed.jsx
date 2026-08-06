@@ -41,12 +41,12 @@ const Feed = () => {
 
         console.log("Response:", result);
 
-        setPhotos(result.data);
+        setPhotos(result?.data);
 
       } catch (err) {
 
         if (err.response?.status === 401) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("loginStorage");
         navigate("/");
         }
 
